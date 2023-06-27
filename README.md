@@ -1,2 +1,2 @@
 # meddle
-REPL for the Hassle language
+REPL for the [Hassle](https://github.com/spikeyarmaku/hassle) language
