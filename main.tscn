@@ -1,0 +1,65 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqwj0cibqmakn"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_22n5q"]
+[ext_resource type="PackedScene" uid="uid://foedm27opk3h" path="res://vm/vm.tscn" id="2_jpo81"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_22n5q")
+
+[node name="Menu" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Menu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Hassle Debugger"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Menu"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Menu/HBoxContainer"]
+layout_mode = 2
+text = "Port:"
+
+[node name="PortNumber" type="LineEdit" parent="Menu/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "32123"
+placeholder_text = "Enter port number"
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="ButtonConnect" type="Button" parent="Menu/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Connect"
+
+[node name="LoadingScreen" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 128
+text = "Loading"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VM" parent="." instance=ExtResource("2_jpo81")]
+visible = false
+layout_mode = 1
+
+[connection signal="send_text" from="VM" to="." method="_on_vm_send_text"]

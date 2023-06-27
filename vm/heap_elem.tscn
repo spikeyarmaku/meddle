@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://by6rk8m0db5yp"]
+
+[ext_resource type="Script" path="res://scripts/heap_elem.gd" id="1_spwjt"]
+
+[node name="HeapElem" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_spwjt")
+
+[node name="Header" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Header"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2

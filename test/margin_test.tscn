@@ -1,0 +1,57 @@
+[gd_scene load_steps=5 format=3 uid="uid://gfa8ufqctjke"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tmp04"]
+content_margin_left = 100.0
+content_margin_top = 100.0
+content_margin_right = 100.0
+content_margin_bottom = 100.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eajik"]
+content_margin_left = 100.0
+content_margin_top = 100.0
+content_margin_right = 100.0
+content_margin_bottom = 100.0
+bg_color = Color(0.243137, 0.427451, 0.286275, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uunlf"]
+content_margin_left = 100.0
+content_margin_top = 100.0
+content_margin_right = 100.0
+content_margin_bottom = 100.0
+bg_color = Color(0.141176, 0.262745, 0.168627, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hturo"]
+content_margin_left = 100.0
+content_margin_top = 100.0
+content_margin_right = 100.0
+content_margin_bottom = 100.0
+bg_color = Color(0.0666667, 0.141176, 0.0823529, 1)
+
+[node name="margin_test" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tmp04")
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eajik")
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/PanelContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uunlf")
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/PanelContainer/PanelContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hturo")

@@ -1,0 +1,67 @@
+[gd_scene load_steps=9 format=3 uid="uid://foedm27opk3h"]
+
+[ext_resource type="StyleBox" uid="uid://3f4mc5xtgq5u" path="res://resources/stylebox_level_0.tres" id="1_rfpgx"]
+[ext_resource type="Script" path="res://scripts/vm.gd" id="1_s33xt"]
+[ext_resource type="PackedScene" uid="uid://bv37nhm02birp" path="res://vm/control.tscn" id="2_aa4ry"]
+[ext_resource type="PackedScene" uid="uid://nqyrhforstqk" path="res://vm/code.tscn" id="2_myqii"]
+[ext_resource type="StyleBox" uid="uid://bms4hbvrls6nb" path="res://resources/stylebox_level_1.tres" id="3_6hwd2"]
+[ext_resource type="PackedScene" uid="uid://y5dhni8gpvhv" path="res://vm/repl.tscn" id="3_gw1q3"]
+[ext_resource type="PackedScene" uid="uid://dq636nfynugwu" path="res://vm/stack.tscn" id="3_tcdcr"]
+[ext_resource type="PackedScene" uid="uid://q660gn6h824k" path="res://vm/heap.tscn" id="4_logca"]
+
+[node name="VM" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("1_rfpgx")
+script = ExtResource("1_s33xt")
+
+[node name="Panes" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="LeftPanel" type="PanelContainer" parent="Panes"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = ExtResource("3_6hwd2")
+
+[node name="LeftPanelChildren" type="VBoxContainer" parent="Panes/LeftPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Code" parent="Panes/LeftPanel/LeftPanelChildren" instance=ExtResource("2_myqii")]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/background_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[node name="Repl" parent="Panes/LeftPanel/LeftPanelChildren" instance=ExtResource("3_gw1q3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RightPanel" type="PanelContainer" parent="Panes"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = ExtResource("3_6hwd2")
+
+[node name="RightPanelChildren" type="VBoxContainer" parent="Panes/RightPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Stack" parent="Panes/RightPanel/RightPanelChildren" instance=ExtResource("3_tcdcr")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Control" parent="Panes/RightPanel/RightPanelChildren" instance=ExtResource("2_aa4ry")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Heap" parent="Panes/RightPanel/RightPanelChildren" instance=ExtResource("4_logca")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="text_submitted" from="Panes/LeftPanel/LeftPanelChildren/Repl" to="." method="_on_repl_text_submitted"]

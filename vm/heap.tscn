@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://q660gn6h824k"]
+
+[ext_resource type="StyleBox" uid="uid://0mv0es2fii1j" path="res://resources/stylebox_level_2.tres" id="1_5pleo"]
+[ext_resource type="Script" path="res://scripts/heap.gd" id="1_o7m05"]
+[ext_resource type="StyleBox" uid="uid://bms4hbvrls6nb" path="res://resources/stylebox_level_1.tres" id="3_er8m2"]
+
+[node name="Heap" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("1_5pleo")
+script = ExtResource("1_o7m05")
+
+[node name="HeapChildren" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HeapChildren"]
+layout_mode = 2
+text = "Heap"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="HeapChildren"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("3_er8m2")
