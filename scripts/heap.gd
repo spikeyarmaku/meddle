@@ -8,12 +8,12 @@ var _elements : Array = [null]
 func deserialize(serializer : Serializer):
 	var count : int = serializer.read_word()
 	for n in range(count):
-		var name : String = serializer.read_null_terminated_string()
+		var binding_name : String = serializer.read_null_terminated_string()
 		var closure := Closure.instantiate()
 		closure.deserialize(serializer)
 		closure.set_expand(true)
 		var heap_elem = HeapElem.instantiate()
-		heap_elem.set_binding_name(name)
+		heap_elem.set_binding_name(binding_name)
 		heap_elem.set_binding_closure(closure)
 		_elements.append(heap_elem)
 		var parent_index : int = serializer.read_word()

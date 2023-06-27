@@ -61,7 +61,7 @@ func _on_vm_send_text(text):
 func _interpret_response(bytes : PackedByteArray):
 	var serializer := Serializer.new()
 	serializer.from_bytes(bytes)
-	var resp_type : ResponseType = serializer.read_uint8()
+	var resp_type : ResponseType = serializer.read_uint8() as ResponseType
 	match resp_type:
 		ResponseType.VMDataResponse:
 			$VM.reset()

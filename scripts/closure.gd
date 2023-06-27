@@ -20,8 +20,10 @@ var is_highlighted:
 			stylebox.bg_color = bg_color_base
 
 func deserialize(serializer : Serializer):
-	var is_term_not_null : bool = serializer.read_uint8()
-	if is_term_not_null:
+	var type : int = serializer.read_uint8()
+	if type == 0:
+		return
+	if type == 2:
 		var term = Term.instantiate()
 		term.deserialize(serializer)
 		%TermContainer.add_child(term)
@@ -33,6 +35,7 @@ func reset():
 
 func set_expand(do_expand : bool):
 	if do_expand:
-		size_flags_horizontal = Control.SIZE_EXPAND | Control.SIZE_FILL
+		size_flags_horizontal = \
+			(Control.SIZE_EXPAND | Control.SIZE_FILL) as Control.SizeFlags
 	else:
 		size_flags_horizontal = Control.SIZE_FILL
