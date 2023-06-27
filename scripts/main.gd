@@ -53,10 +53,11 @@ func _on_button_connect_pressed():
 	state = DebuggerState.Connecting
 
 func _on_vm_send_text(text):
-	print("Sending: ", text)
 	var serializer = Serializer.new()
 	serializer.from_network(connection)
 	serializer.write_string(text)
+	if text == "exit":
+		get_tree().quit()
 
 func _interpret_response(bytes : PackedByteArray):
 	var serializer := Serializer.new()
