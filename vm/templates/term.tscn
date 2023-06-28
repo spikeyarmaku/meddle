@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c4vxgkjn18vdg"]
+[gd_scene load_steps=6 format=3 uid="uid://c4vxgkjn18vdg"]
 
 [ext_resource type="Script" path="res://scripts/term.gd" id="1_v0m8v"]
 [ext_resource type="Texture2D" uid="uid://cmqt3ljllod3g" path="res://assets/lambda_arrow.png" id="2_bv0d3"]
@@ -16,10 +16,6 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1odg6"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uquth"]
-
 [node name="Term" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,39 +31,36 @@ visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Value" type="PanelContainer" parent="PrimVal"]
+[node name="Value" type="CenterContainer" parent="PrimVal"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_1odg6")
+size_flags_horizontal = 3
 
 [node name="Abs" type="HBoxContainer" parent="."]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Symbol" type="PanelContainer" parent="Abs"]
+[node name="Symbol" type="CenterContainer" parent="Abs"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxEmpty_uquth")
 
 [node name="Arrow" type="TextureRect" parent="Abs"]
 layout_mode = 2
 texture = ExtResource("2_bv0d3")
 stretch_mode = 3
 
-[node name="Term" type="PanelContainer" parent="Abs"]
+[node name="Term" type="CenterContainer" parent="Abs"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxEmpty_uquth")
 
 [node name="LazyApp" type="HBoxContainer" parent="."]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Term1" type="PanelContainer" parent="LazyApp"]
+[node name="Term1" type="CenterContainer" parent="LazyApp"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxEmpty_uquth")
 
 [node name="LazySymbol" type="TextureRect" parent="LazyApp"]
 layout_mode = 2
@@ -75,30 +68,27 @@ texture = ExtResource("3_cf7bs")
 stretch_mode = 3
 flip_h = true
 
-[node name="Term2" type="PanelContainer" parent="LazyApp"]
+[node name="Term2" type="CenterContainer" parent="LazyApp"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxEmpty_uquth")
 
 [node name="StrictApp" type="HBoxContainer" parent="."]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Term1" type="PanelContainer" parent="StrictApp"]
+[node name="Term1" type="CenterContainer" parent="StrictApp"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxEmpty_uquth")
 
 [node name="StrictSymbol" type="TextureRect" parent="StrictApp"]
 layout_mode = 2
 texture = ExtResource("3_cf7bs")
 stretch_mode = 3
 
-[node name="Term2" type="PanelContainer" parent="StrictApp"]
+[node name="Term2" type="CenterContainer" parent="StrictApp"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxEmpty_uquth")
 
 [node name="Op" type="HBoxContainer" parent="."]
 visible = false
@@ -110,9 +100,9 @@ layout_mode = 2
 texture = ExtResource("4_kk5hw")
 stretch_mode = 3
 
-[node name="Value" type="PanelContainer" parent="Op"]
+[node name="Value" type="CenterContainer" parent="Op"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_uquth")
+size_flags_horizontal = 3
 
 [node name="World" type="HBoxContainer" parent="."]
 visible = false
