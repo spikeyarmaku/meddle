@@ -13,20 +13,25 @@ grow_vertical = 2
 theme_override_styles/panel = ExtResource("1_e27en")
 script = ExtResource("1_227fd")
 
-[node name="StackChildren" type="VBoxContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
 
-[node name="VBoxContainer" type="PanelContainer" parent="StackChildren"]
+[node name="StackChildren" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="PanelContainer" parent="ScrollContainer/StackChildren"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = ExtResource("3_fpbta")
 
-[node name="StackElems" type="VBoxContainer" parent="StackChildren/VBoxContainer"]
+[node name="StackElems" type="VBoxContainer" parent="ScrollContainer/StackChildren/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 2
 
-[node name="Label" type="Label" parent="StackChildren"]
+[node name="Label" type="Label" parent="ScrollContainer/StackChildren"]
 layout_mode = 2
 text = "Stack"
 horizontal_alignment = 1

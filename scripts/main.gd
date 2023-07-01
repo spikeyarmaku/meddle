@@ -62,9 +62,12 @@ func _on_vm_send_text(text):
 func _interpret_response(bytes : PackedByteArray):
 	var serializer := Serializer.new()
 	serializer.from_bytes(bytes)
-	var resp_type : ResponseType = serializer.read_uint8() as ResponseType
-	match resp_type:
-		ResponseType.VMDataResponse:
-			$VM.reset()
-			$VM.deserialize(serializer)
-		ResponseType.TermResponse: pass
+	while not serializer.has_finished():
+		var resp_type : ResponseType = serializer.read_uint8() as ResponseType
+#		print("New response size: ", bytes.size(), ", type: ", resp_type)
+		match resp_type:
+			ResponseType.VMDataResponse:
+				var vm_bytes = serializer.get_data()
+				print(vm_bytes)
+				$VM.new_state(vm_bytes)
+			ResponseType.TermResponse: pass

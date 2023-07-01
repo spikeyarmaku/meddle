@@ -13,6 +13,9 @@ func from_bytes(bytes = PackedByteArray([]), little_endian : bool = true) -> voi
 func from_network(connection : StreamPeerTCP):
 	_stream_peer = connection
 
+func get_data() -> PackedByteArray:
+	return _stream_peer.get_data(_stream_peer.get_available_bytes())[1]
+
 func read_word_size():
 	_word_size = _stream_peer.get_u8()
 	

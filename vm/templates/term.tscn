@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://c4vxgkjn18vdg"]
+[gd_scene load_steps=5 format=3 uid="uid://c4vxgkjn18vdg"]
 
-[ext_resource type="Script" path="res://scripts/term.gd" id="1_v0m8v"]
+[ext_resource type="Script" path="res://scripts/term.gd" id="1_qivj4"]
 [ext_resource type="Texture2D" uid="uid://cmqt3ljllod3g" path="res://assets/lambda_arrow.png" id="2_bv0d3"]
-[ext_resource type="Texture2D" uid="uid://b4236aekqe4pg" path="res://assets/app_arrow.png" id="3_cf7bs"]
 [ext_resource type="Texture2D" uid="uid://v0yomaho8hje" path="res://assets/operator_symbol.png" id="4_kk5hw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5uwl"]
@@ -23,88 +22,79 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_d5uwl")
-script = ExtResource("1_v0m8v")
+script = ExtResource("1_qivj4")
 metadata/_edit_use_anchors_ = true
 
-[node name="PrimVal" type="HBoxContainer" parent="."]
+[node name="TermValueContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="PrimVal" type="CenterContainer" parent="TermValueContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Value" type="CenterContainer" parent="TermValueContainer/PrimVal"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Abs" type="HBoxContainer" parent="TermValueContainer"]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Value" type="CenterContainer" parent="PrimVal"]
+[node name="Symbol" type="CenterContainer" parent="TermValueContainer/Abs"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Abs" type="HBoxContainer" parent="."]
-visible = false
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="Symbol" type="CenterContainer" parent="Abs"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Arrow" type="TextureRect" parent="Abs"]
+[node name="Arrow" type="TextureRect" parent="TermValueContainer/Abs"]
 layout_mode = 2
 texture = ExtResource("2_bv0d3")
 stretch_mode = 3
 
-[node name="Term" type="CenterContainer" parent="Abs"]
+[node name="Term" type="CenterContainer" parent="TermValueContainer/Abs"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LazyApp" type="HBoxContainer" parent="."]
+[node name="App" type="HBoxContainer" parent="TermValueContainer"]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Term1" type="CenterContainer" parent="LazyApp"]
+[node name="Term1" type="CenterContainer" parent="TermValueContainer/App"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LazySymbol" type="TextureRect" parent="LazyApp"]
-layout_mode = 2
-texture = ExtResource("3_cf7bs")
-stretch_mode = 3
-flip_h = true
-
-[node name="Term2" type="CenterContainer" parent="LazyApp"]
+[node name="Term2" type="CenterContainer" parent="TermValueContainer/App"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="StrictApp" type="HBoxContainer" parent="."]
-visible = false
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="Term1" type="CenterContainer" parent="StrictApp"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="StrictSymbol" type="TextureRect" parent="StrictApp"]
-layout_mode = 2
-texture = ExtResource("3_cf7bs")
-stretch_mode = 3
-
-[node name="Term2" type="CenterContainer" parent="StrictApp"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Op" type="HBoxContainer" parent="."]
+[node name="Op" type="HBoxContainer" parent="TermValueContainer"]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="TextureRect" type="TextureRect" parent="Op"]
+[node name="TextureRect" type="TextureRect" parent="TermValueContainer/Op"]
 layout_mode = 2
 texture = ExtResource("4_kk5hw")
 stretch_mode = 3
 
-[node name="Value" type="CenterContainer" parent="Op"]
+[node name="Value" type="CenterContainer" parent="TermValueContainer/Op"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="World" type="HBoxContainer" parent="."]
+[node name="World" type="CenterContainer" parent="TermValueContainer"]
 visible = false
 layout_mode = 2
-theme_override_constants/separation = 0
+
+[node name="Minimized" type="CenterContainer" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Minimized"]
+layout_mode = 2
+text = "..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

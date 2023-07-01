@@ -14,7 +14,10 @@ script = ExtResource("1_spwjt")
 [node name="Header" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Header"]
+[node name="LabelFrameIndex" type="Label" parent="Header"]
+layout_mode = 2
+
+[node name="LabelBindingName" type="Label" parent="Header"]
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]

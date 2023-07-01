@@ -21,5 +21,6 @@ horizontal_alignment = 1
 
 [node name="ClosureContainer" type="PanelContainer" parent="ControlChildren"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("3_2aiws")

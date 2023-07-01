@@ -2,22 +2,31 @@
 
 extends Control
 
+signal highlight_frame(frame_index : int, to_highlight : bool)
+
 const bg_color_base : Color = Color("1d2229")
 const bg_color_selection : Color = Color("2a291d")
 
 const Term = preload("res://vm/templates/term.tscn")
 var frame_index : int
 
-var is_highlighted:
+func _ready():
+	$HBoxContainer/FrameMarker/Label.text = str(frame_index)
+
+var is_highlighted: bool = false:
 	get:
 		return is_highlighted
 	set(value):
 		is_highlighted = value
-		var stylebox : StyleBoxFlat = get_theme_stylebox("panel")
 		if value:
-			stylebox.bg_color = bg_color_selection
+			_set_stylebox_color(bg_color_selection)
 		else:
-			stylebox.bg_color = bg_color_base
+			_set_stylebox_color(bg_color_base)
+
+func _set_stylebox_color(color : Color):
+	var stylebox : StyleBoxFlat = get_theme_stylebox("panel").duplicate()
+	stylebox.bg_color = color
+	add_theme_stylebox_override("panel", stylebox)
 
 func deserialize(serializer : Serializer):
 	var type : int = serializer.read_uint8()
@@ -39,3 +48,11 @@ func set_expand(do_expand : bool):
 			(Control.SIZE_EXPAND | Control.SIZE_FILL) as Control.SizeFlags
 	else:
 		size_flags_horizontal = Control.SIZE_FILL
+
+func _on_frame_marker_mouse_entered():
+	is_highlighted = true
+	emit_signal("highlight_frame", frame_index, true)
+
+func _on_frame_marker_mouse_exited():
+	is_highlighted = false
+	emit_signal("highlight_frame", frame_index, false)

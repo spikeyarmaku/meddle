@@ -1,10 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://c2okws7jjik4h"]
+[gd_scene load_steps=4 format=3 uid="uid://c2okws7jjik4h"]
 
-[ext_resource type="StyleBox" uid="uid://djnt0aqo8j7lj" path="res://resources/stylebox_rounded.tres" id="1_ehn1w"]
+[ext_resource type="StyleBox" uid="uid://djnt0aqo8j7lj" path="res://resources/stylebox_rounded_dark.tres" id="1_qfivq"]
 [ext_resource type="Script" path="res://scripts/closure.gd" id="1_wv4in"]
-[ext_resource type="Texture2D" uid="uid://bwh0sxnvxit4" path="res://assets/frame_marker.png" id="2_erdp0"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nqaok"]
+[ext_resource type="StyleBox" uid="uid://c0ehv3lj360xs" path="res://resources/stylebox_rounded_light.tres" id="3_3ejyc"]
 
 [node name="Closure" type="PanelContainer"]
 anchors_preset = 15
@@ -12,20 +10,25 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = ExtResource("1_ehn1w")
+theme_override_styles/panel = ExtResource("1_qfivq")
 script = ExtResource("1_wv4in")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="TermContainer" type="PanelContainer" parent="HBoxContainer"]
+[node name="TermContainer" type="CenterContainer" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_nqaok")
+size_flags_horizontal = 3
 
-[node name="FrameMarker" type="TextureRect" parent="HBoxContainer"]
+[node name="FrameMarker" type="PanelContainer" parent="HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 10
-texture = ExtResource("2_erdp0")
-stretch_mode = 5
+size_flags_horizontal = 8
+theme_override_styles/panel = ExtResource("3_3ejyc")
+
+[node name="Label" type="Label" parent="HBoxContainer/FrameMarker"]
+layout_mode = 2
+
+[connection signal="mouse_entered" from="HBoxContainer/FrameMarker" to="." method="_on_frame_marker_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/FrameMarker" to="." method="_on_frame_marker_mouse_exited"]
