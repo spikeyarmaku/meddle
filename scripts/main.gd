@@ -66,8 +66,9 @@ func _interpret_response(bytes : PackedByteArray):
 		var resp_type : ResponseType = serializer.read_uint8() as ResponseType
 #		print("New response size: ", bytes.size(), ", type: ", resp_type)
 		match resp_type:
+			ResponseType.EvalStateResponse:
+				$VM.is_finished = 1 - serializer.read_uint8()
 			ResponseType.VMDataResponse:
 				var vm_bytes = serializer.get_data()
-				print(vm_bytes)
 				$VM.new_state(vm_bytes)
 			ResponseType.TermResponse: pass

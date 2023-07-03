@@ -1,0 +1,1 @@
+- Clicking on a closure's frame marker should highlight the corresponding entry in the heap
