@@ -30,5 +30,6 @@ theme_override_styles/panel = ExtResource("3_3ejyc")
 [node name="Label" type="Label" parent="HBoxContainer/FrameMarker"]
 layout_mode = 2
 
+[connection signal="gui_input" from="HBoxContainer/FrameMarker" to="." method="_on_frame_marker_gui_input"]
 [connection signal="mouse_entered" from="HBoxContainer/FrameMarker" to="." method="_on_frame_marker_mouse_entered"]
 [connection signal="mouse_exited" from="HBoxContainer/FrameMarker" to="." method="_on_frame_marker_mouse_exited"]

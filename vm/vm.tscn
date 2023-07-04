@@ -130,7 +130,9 @@ max_value = 0.0
 
 [connection signal="text_submitted" from="Panes/LeftPanel/LeftPanelChildren/Repl" to="." method="_on_repl_text_submitted"]
 [connection signal="highlight_frame" from="Panes/RightPanel/RightPanelChildren/Stack" to="." method="_on_stack_highlight_frame"]
+[connection signal="jump_to_frame" from="Panes/RightPanel/RightPanelChildren/Stack" to="." method="_on_stack_jump_to_frame"]
 [connection signal="highlight_frame" from="Panes/RightPanel/RightPanelChildren/Control" to="." method="_on_control_highlight_frame"]
+[connection signal="jump_to_frame" from="Panes/RightPanel/RightPanelChildren/Control" to="." method="_on_control_jump_to_frame"]
 [connection signal="pressed" from="Panes/RightPanel/RightPanelChildren/Stepper/HBoxContainer/ButtonBack" to="." method="_on_button_back_pressed"]
 [connection signal="pressed" from="Panes/RightPanel/RightPanelChildren/Stepper/HBoxContainer/ButtonStep" to="." method="_on_button_step_pressed"]
 [connection signal="pressed" from="Panes/RightPanel/RightPanelChildren/Stepper/HBoxContainer/ButtonRun" to="." method="_on_button_run_pressed"]

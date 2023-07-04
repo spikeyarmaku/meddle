@@ -9,7 +9,7 @@ const PrimVal = preload("res://vm/templates/primval.tscn")
 const Term = preload("res://vm/templates/term.tscn")
 
 enum TermType {PrimvalTerm, AbsTerm, AppTerm, OpTerm, WorldTerm}
-enum OpType {Add, Sub, Mul, Div, Eq}
+enum OpType {Vau, Add, Sub, Mul, Div, Eq}
 
 var lam_name : String
 var op : OpType
@@ -91,6 +91,7 @@ func deserialize(serializer: Serializer):
 			var op_primval = PrimVal.instantiate()
 			op_primval.type = op_primval.PrimValType.StringValue
 			match op:
+				OpType.Vau: op_primval.text = "Vau"
 				OpType.Add: op_primval.text = "+"
 				OpType.Sub: op_primval.text = "-"
 				OpType.Mul: op_primval.text = "*"

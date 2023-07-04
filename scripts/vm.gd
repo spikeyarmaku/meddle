@@ -53,6 +53,7 @@ func reset():
 func new_state(bytes : PackedByteArray):
 	if (bytes.size() != 0):
 		_vm_history.append(bytes)
+		print(bytes)
 	%HSliderStep.max_value = _max_step
 	_go_forward()
 
@@ -103,3 +104,9 @@ func _on_h_slider_step_drag_ended(_value_changed : bool):
 func _on_button_run_pressed():
 	_run_mode = not _run_mode
 	_go_forward()
+
+func _on_control_jump_to_frame(frame_index):
+	%Heap.jump_to_frame(frame_index)
+
+func _on_stack_jump_to_frame(frame_index):
+	%Heap.jump_to_frame(frame_index)

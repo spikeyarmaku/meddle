@@ -17,6 +17,7 @@ func deserialize(serializer : Serializer):
 		closure.deserialize(serializer)
 		closure.set_expand(true)
 		closure.connect("highlight_frame", highlight_frame)
+		closure.connect("jump_to_frame", jump_to_frame)
 		var heap_elem = HeapElem.instantiate()
 		heap_elem.set_binding_name(_elements.size(), binding_name)
 		heap_elem.set_binding_closure(closure)
@@ -31,9 +32,17 @@ func deserialize(serializer : Serializer):
 func highlight_frame(frame_index, to_highlight):
 	var container = _elements[frame_index]
 	if container != null:
-		container.get_child(0).get_child(2).is_highlighted = to_highlight
+		container.get_binding_closure().is_highlighted = to_highlight
 		if frame_index != 0:
 			highlight_frame(_parents[frame_index], to_highlight)
+
+func jump_to_frame(frame_index):
+	var container = _elements[frame_index]
+	var closure = container.get_binding_closure()
+	if container != null:
+		if closure.get_term() != null:
+			$ScrollContainer.ensure_control_visible(closure.get_term())
+		closure.blink()
 
 func reset():
 	for c in %PanelContainer.get_children():

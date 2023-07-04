@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://by6rk8m0db5yp"]
+[gd_scene load_steps=3 format=3 uid="uid://by6rk8m0db5yp"]
 
 [ext_resource type="Script" path="res://scripts/heap_elem.gd" id="1_spwjt"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ruq76"]
 
 [node name="HeapElem" type="VBoxContainer"]
 anchors_preset = 15
@@ -19,6 +21,11 @@ layout_mode = 2
 
 [node name="LabelBindingName" type="Label" parent="Header"]
 layout_mode = 2
+
+[node name="ClosureContainer" type="PanelContainer" parent="Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ruq76")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
