@@ -8,7 +8,7 @@ const bg_color_highlight = Color.WHITE
 const PrimVal = preload("res://vm/templates/primval.tscn")
 const Term = preload("res://vm/templates/term.tscn")
 
-enum TermType {PrimvalTerm, AbsTerm, AppTerm, OpTerm, WorldTerm}
+enum TermType {PrimvalTerm, AbsTerm, AppTerm, OpTerm, DummyTerm, VauTerm}
 enum OpType {Vau, Add, Sub, Mul, Div, Eq}
 
 var lam_name : String
@@ -70,7 +70,7 @@ func deserialize(serializer: Serializer):
 		TermType.AbsTerm: # Abs
 			lam_name = serializer.read_null_terminated_string()
 			var lam_name_primval = PrimVal.instantiate()
-			lam_name_primval.type = lam_name_primval.PrimValType.StringValue
+			lam_name_primval.type = lam_name_primval.PrimValType.SymbolValue
 			lam_name_primval.text = lam_name
 			$TermValueContainer/Abs/Symbol.add_child(lam_name_primval)
 			var term = Term.instantiate()
@@ -89,17 +89,22 @@ func deserialize(serializer: Serializer):
 		TermType.OpTerm: # Op
 			op = serializer.read_uint8() as OpType
 			var op_primval = PrimVal.instantiate()
-			op_primval.type = op_primval.PrimValType.StringValue
+			op_primval.type = op_primval.PrimValType.SymbolValue
 			match op:
-				OpType.Vau: op_primval.text = "Vau"
-				OpType.Add: op_primval.text = "+"
-				OpType.Sub: op_primval.text = "-"
-				OpType.Mul: op_primval.text = "*"
-				OpType.Div: op_primval.text = "/"
-				OpType.Eq:  op_primval.text = "="
+				OpType.Vau:     op_primval.text = "Vau"
+				OpType.Add:     op_primval.text = "+"
+				OpType.Sub:     op_primval.text = "-"
+				OpType.Mul:     op_primval.text = "*"
+				OpType.Div:     op_primval.text = "/"
+				OpType.Eq:      op_primval.text = "="
 			$TermValueContainer/Op/Value.add_child(op_primval)
-		TermType.WorldTerm: # World
-			pass # TODO
+		TermType.DummyTerm: # World
+			pass
+		TermType.VauTerm: #Vau
+			var vau_term = Term.instantiate()
+			vau_term.set_color_variant(color_variant + 1)
+			vau_term.deserialize(serializer)
+			$TermValueContainer/Vau/Term.add_child(vau_term)
 
 func _on_mouse_entered():
 	is_highlighted = true

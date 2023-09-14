@@ -4,9 +4,10 @@ extends Label
 
 const string_color : Color = Color("ffeda0ff")
 const rational_color : Color = Color("a0ffe0ff")
-const symbol_color : Color = Color("cdced2ff")
+const symbol_color : Color = Color("f789c7ff")
+const reference_color : Color = Color("cdced2ff")
 
-enum PrimValType {RationalValue, StringValue, SymbolValue}
+enum PrimValType {RationalValue, StringValue, ReferenceValue, SymbolValue}
 
 var type : PrimValType:
 	get: return type
@@ -19,12 +20,14 @@ var type : PrimValType:
 				add_theme_color_override("font_color", string_color)
 			PrimValType.SymbolValue:
 				add_theme_color_override("font_color", symbol_color)
+			PrimValType.ReferenceValue:
+				add_theme_color_override("font_color", reference_color)
 
 func deserialize(serializer : Serializer):
 	type = serializer.read_uint8() as PrimValType
 	match type:
 		0: text = str(_read_rational(serializer))
-		1, 2: text = serializer.read_null_terminated_string()
+		1, 2, 3: text = serializer.read_null_terminated_string()
 
 func _read_rational(serializer : Serializer) -> float:
 	var rational_sign : int = serializer.read_uint8()

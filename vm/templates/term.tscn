@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://c4vxgkjn18vdg"]
+[gd_scene load_steps=7 format=3 uid="uid://c4vxgkjn18vdg"]
 
 [ext_resource type="Script" path="res://scripts/term.gd" id="1_qivj4"]
 [ext_resource type="Texture2D" uid="uid://cmqt3ljllod3g" path="res://assets/lambda_arrow.png" id="2_bv0d3"]
 [ext_resource type="Texture2D" uid="uid://v0yomaho8hje" path="res://assets/operator_symbol.png" id="4_kk5hw"]
+[ext_resource type="Texture2D" uid="uid://dehba5xwem6uh" path="res://assets/dummy.png" id="4_xuqna"]
+[ext_resource type="Texture2D" uid="uid://uh7bo8mfr7nf" path="res://assets/vau.png" id="5_ega80"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5uwl"]
 content_margin_left = 10.0
@@ -81,9 +83,25 @@ stretch_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="World" type="CenterContainer" parent="TermValueContainer"]
+[node name="Dummy" type="CenterContainer" parent="TermValueContainer"]
 visible = false
 layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="TermValueContainer/Dummy"]
+layout_mode = 2
+texture = ExtResource("4_xuqna")
+
+[node name="Vau" type="HBoxContainer" parent="TermValueContainer"]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="TermValueContainer/Vau"]
+layout_mode = 2
+texture = ExtResource("5_ega80")
+
+[node name="Term" type="CenterContainer" parent="TermValueContainer/Vau"]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Minimized" type="CenterContainer" parent="."]
 visible = false
