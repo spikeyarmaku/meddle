@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bixy52memyafd"]
+
+[node name="TreeContainer" type="SubViewportContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="."]
+disable_3d = true
+size = Vector2i(1152, 648)
