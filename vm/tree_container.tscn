@@ -34,9 +34,11 @@ unique_name_in_owner = true
 position = Vector2(3, 3)
 
 [node name="Camera2D" type="Camera2D" parent="StackChildren/SubViewportContainer/SubViewport"]
-zoom = Vector2(0.5, 0.5)
+unique_name_in_owner = true
 
 [node name="Label" type="Label" parent="StackChildren"]
 layout_mode = 2
 text = "Tree"
 horizontal_alignment = 1
+
+[connection signal="gui_input" from="StackChildren/SubViewportContainer" to="." method="_on_sub_viewport_container_gui_input"]
