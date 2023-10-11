@@ -1,11 +1,11 @@
 # UI Layout:
-# +---------+---------+
-# | code    | stack   |
-# |         +---------+
-# +---------+ control |
-# |         +---------+
-# | REPL    | heap    |
-# +---------+---------+
+# +----------+----------+
+# | code     |          |
+# |          |   tree   |
+# +----------+          |
+# |          +----------+
+# | REPL     | controls |
+# +----------+----------+
 
 extends Control
 
@@ -64,7 +64,7 @@ func _interpret_response(bytes : PackedByteArray):
     serializer.from_bytes(bytes)
     while not serializer.has_finished():
         var resp_type : ResponseType = serializer.read_uint8() as ResponseType
-#		print("New response size: ", bytes.size(), ", type: ", resp_type)
+        print("New response size: ", bytes.size(), ", type: ", resp_type)
         match resp_type:
             ResponseType.EvalStateResponse:
                 $VM.is_finished = 1 - serializer.read_uint8()

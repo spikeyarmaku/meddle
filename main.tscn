@@ -20,12 +20,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="Menu"]
+[node name="Title" type="Label" parent="Menu"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "Meddle"
 
-[node name="Label2" type="Label" parent="Menu"]
+[node name="Subtitle" type="Label" parent="Menu"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "The Hassle Debugger"
@@ -33,7 +33,7 @@ text = "The Hassle Debugger"
 [node name="HBoxContainer" type="HBoxContainer" parent="Menu"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Menu/HBoxContainer"]
+[node name="PortLabel" type="Label" parent="Menu/HBoxContainer"]
 layout_mode = 2
 text = "Port:"
 

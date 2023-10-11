@@ -102,7 +102,7 @@ func _construct_tree(serializer : Serializer):
         TermType.Fork:
             _construct_tree(serializer)
             var child = TreeNode.instantiate()
-            child.construct_from_bytes(serializer)
+            child.deserialize(serializer)
             if $SubTrees.get_child_count() == 0:
                 width = 0
             $SubTrees.add_child(child)
@@ -116,8 +116,17 @@ func _construct_tree(serializer : Serializer):
         TermType.Rational:
             $Shape/Label.text = _read_rational(serializer)
 
-func construct_from_bytes(serializer : Serializer):
+func deserialize(serializer : Serializer):
     _construct_tree(serializer)
     for i in range($SubTrees.get_child_count()):
         $SubTrees.get_child(i).position = _child_position(i)
     _create_shape()
+
+func reset():
+    width = 0
+    for s in $Shape.get_children():
+        s.queue_free()
+        $Shape.remove_child(s)
+    for c in $SubTrees.get_children():
+        c.queue_free()
+        $SubTrees.remove_child(c)

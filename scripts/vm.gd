@@ -46,22 +46,19 @@ func _process(_delta):
         _go_forward()
 
 func reset():
-    %Heap.reset()
-    %Control.reset()
-    %Stack.reset()
+    %TreeContainer.reset()
 
 func new_state(bytes : PackedByteArray):
     if (bytes.size() != 0):
         _vm_history.append(bytes)
         print(bytes)
     %HSliderStep.max_value = _max_step
+#    if _run_mode == true:
     _go_forward()
 
 func _deserialize(serializer : Serializer):
     serializer.read_word_size()
-    %Heap.deserialize(serializer)
-    %Control.deserialize(serializer)
-    %Stack.deserialize(serializer)
+    %TreeContainer.deserialize(serializer)
 
 func _refresh_current_state() -> void:
     reset()
@@ -77,16 +74,11 @@ func _go_forward():
     _current_step += 1
 
 func _go_back():
+    %HSliderStep.min_value = 0
     _current_step -= 1
-
-func _on_stack_highlight_frame(frame_index, to_highlight):
-    %Heap.highlight_frame(frame_index, to_highlight)
 
 func _on_repl_text_submitted(text : String):
     emit_signal("send_text", text)
-
-func _on_control_highlight_frame(frame_index, to_highlight):
-    %Heap.highlight_frame(frame_index, to_highlight)
 
 func _on_button_back_pressed():
     _go_back()
@@ -104,9 +96,3 @@ func _on_h_slider_step_drag_ended(_value_changed : bool):
 func _on_button_run_pressed():
     _run_mode = not _run_mode
     _go_forward()
-
-func _on_control_jump_to_frame(frame_index):
-    %Heap.jump_to_frame(frame_index)
-
-func _on_stack_jump_to_frame(frame_index):
-    %Heap.jump_to_frame(frame_index)
