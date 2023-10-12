@@ -1,6 +1,7 @@
 extends Node2D
 
-enum TermType {Fork, Leaf, Symbol, String, Rational}
+enum TermType {Fork, Leaf, Symbol, String, Rational, Primop}
+enum Primop {Add, Sub, Mul, Div, Eq}
 
 const _side_length : float = 50
 const _v_separation : float = 10
@@ -110,11 +111,24 @@ func _construct_tree(serializer : Serializer):
         TermType.Leaf:
             pass
         TermType.Symbol:
-            $Shape/Label.text = serializer.read_null_terminated_string()
+            $Label.text = serializer.read_null_terminated_string()
         TermType.String:
-            $Shape/Label.text = "\"" + serializer.read_null_terminated_string() + "\""
+            $Label.text = "\"" + serializer.read_null_terminated_string() + "\""
         TermType.Rational:
-            $Shape/Label.text = _read_rational(serializer)
+            $Label.text = str(_read_rational(serializer))
+        TermType.Primop:
+            var primop = serializer.read_uint8()
+            match primop:
+                Primop.Add:
+                    $Label.text = "<Add>"
+                Primop.Sub:
+                    $Label.text = "<Sub>"
+                Primop.Mul:
+                    $Label.text = "<Mul>"
+                Primop.Div:
+                    $Label.text = "<Div>"
+                Primop.Eq:
+                    $Label.text = "<Eq>"
 
 func deserialize(serializer : Serializer):
     _construct_tree(serializer)
@@ -124,6 +138,7 @@ func deserialize(serializer : Serializer):
 
 func reset():
     width = 0
+    $Label.text = ""
     for s in $Shape.get_children():
         s.queue_free()
         $Shape.remove_child(s)

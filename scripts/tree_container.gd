@@ -19,7 +19,6 @@ func _on_sub_viewport_container_gui_input(event: InputEvent) -> void:
                 %Camera2D.zoom *= 1.2
             MOUSE_BUTTON_WHEEL_DOWN:
                 %Camera2D.zoom /= 1.2
-        print(event)
     elif event is InputEventMouseMotion:
         if _dragging:
             %Camera2D.position -= event.relative / %Camera2D.zoom
