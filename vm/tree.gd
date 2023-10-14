@@ -1,6 +1,6 @@
 extends Node2D
 
-enum TermType {Fork, Leaf, Symbol, String, Rational, Primop}
+enum TermType {Delta, Symbol, String, Rational, Primop}
 enum Primop {Add, Sub, Mul, Div, Eq}
 
 const _side_length : float = 50
@@ -100,15 +100,7 @@ func _construct_tree(serializer : Serializer):
     width = 1
     var type = serializer.read_uint8()
     match type:
-        TermType.Fork:
-            _construct_tree(serializer)
-            var child = TreeNode.instantiate()
-            child.deserialize(serializer)
-            if $SubTrees.get_child_count() == 0:
-                width = 0
-            $SubTrees.add_child(child)
-            width += child.width
-        TermType.Leaf:
+        TermType.Delta:
             pass
         TermType.Symbol:
             $Label.text = serializer.read_null_terminated_string()
@@ -129,6 +121,16 @@ func _construct_tree(serializer : Serializer):
                     $Label.text = "<Div>"
                 Primop.Eq:
                     $Label.text = "<Eq>"
+    var child_count = serializer.read_uint8()
+    if child_count > 0:
+        width = 0
+        for i in child_count:
+            var child = TreeNode.instantiate()
+            child.deserialize(serializer)
+            if $SubTrees.get_child_count() == 0:
+                width = 0
+            $SubTrees.add_child(child)
+            width += child.width
 
 func deserialize(serializer : Serializer):
     _construct_tree(serializer)
