@@ -2,6 +2,8 @@ extends Control
 
 signal send_text(text : String)
 
+var _is_waiting : bool = false
+
 var is_finished : bool = false:
     set(new_value):
         is_finished = new_value
@@ -20,6 +22,7 @@ var _current_step : int:
         if new_value > _max_step:
             if is_finished == false:
                 _request_next_step()
+                _is_waiting = true
             else:
                 _run_mode = false
         elif new_value >= 0:
@@ -42,7 +45,7 @@ var _run_mode : bool = false:
             %ButtonRun.text = "Run"
 
 func _process(_delta):
-    if _run_mode == true:
+    if _run_mode == true and not _is_waiting:
         _go_forward()
 
 func reset():
@@ -53,6 +56,7 @@ func new_state(bytes : PackedByteArray):
         _vm_history.append(bytes)
         print(bytes)
     %HSliderStep.max_value = _max_step
+    _is_waiting = false
 #    if _run_mode == true:
     _go_forward()
 
@@ -67,8 +71,8 @@ func _refresh_current_state() -> void:
     _deserialize(serializer)
 
 func _request_next_step():
-    emit_signal("send_text", "step")
-    emit_signal("send_text", "get")
+    send_text.emit("step")
+    send_text.emit("get")
 
 func _go_forward():
     _current_step += 1
@@ -78,7 +82,7 @@ func _go_back():
     _current_step -= 1
 
 func _on_repl_text_submitted(text : String):
-    emit_signal("send_text", text)
+    send_text.emit(text)
 
 func _on_button_back_pressed():
     _go_back()

@@ -16,6 +16,8 @@ enum ResponseType {EvalStateResponse, TermResponse, VMDataResponse,
 var connection : StreamPeerTCP
 var state := DebuggerState.Disconnected
 
+var _send_queue = []
+
 var debug = true
 
 # Called when the node enters the scene tree for the first time.
@@ -43,6 +45,7 @@ func _process(_delta):
                 _interpret_response(connection.get_data(byte_count)[1])
             if connection.get_status() == StreamPeerTCP.STATUS_NONE:
                 state = DebuggerState.Disconnected
+            _send_messages()
 
 func _on_button_connect_pressed():
     var port := int(%PortNumber.text)
@@ -52,12 +55,19 @@ func _on_button_connect_pressed():
     $LoadingScreen.visible = true
     state = DebuggerState.Connecting
 
+# TODO add the messages to a queue, and send them after previous response has
+# arrived
 func _on_vm_send_text(text):
-    var serializer = Serializer.new()
-    serializer.from_network(connection)
-    serializer.write_string(text)
-    if text == "exit":
-        get_tree().quit()
+    _send_queue.append(text)
+
+func _send_messages():
+    if _send_queue.size() > 0:
+        var text = _send_queue.pop_front()
+        var serializer = Serializer.new()
+        serializer.from_network(connection)
+        serializer.write_string(text)
+        if text == "exit":
+            get_tree().quit()
 
 func _interpret_response(bytes : PackedByteArray):
     var serializer := Serializer.new()
