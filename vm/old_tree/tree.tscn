@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://malv8s2whwlp"]
 
-[ext_resource type="Script" path="res://vm/tree.gd" id="1_2qalq"]
+[ext_resource type="Script" path="res://vm/old_tree/tree.gd" id="1_2qalq"]
 
 [node name="Tree" type="Node2D"]
 script = ExtResource("1_2qalq")

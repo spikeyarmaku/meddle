@@ -1,9 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://cgi67ki58qi78"]
 
-[ext_resource type="Script" path="res://vm/tree_test.gd" id="1_22i64"]
+[ext_resource type="Script" path="res://tree_test.gd" id="1_ibicf"]
 
 [node name="TreeTest" type="Node2D"]
-script = ExtResource("1_22i64")
+script = ExtResource("1_ibicf")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, 200)
+zoom = Vector2(0.1, 0.1)

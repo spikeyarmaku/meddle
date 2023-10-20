@@ -2,7 +2,7 @@
 
 [ext_resource type="StyleBox" uid="uid://0mv0es2fii1j" path="res://resources/stylebox_level_2.tres" id="1_2j7is"]
 [ext_resource type="Script" path="res://scripts/tree_container.gd" id="2_nklv0"]
-[ext_resource type="PackedScene" uid="uid://malv8s2whwlp" path="res://vm/tree.tscn" id="3_bcokp"]
+[ext_resource type="PackedScene" uid="uid://b6sntom2e8224" path="res://vm/tree_node.tscn" id="3_3584l"]
 
 [node name="TreeContainer" type="PanelContainer"]
 anchors_preset = 15
@@ -29,9 +29,8 @@ handle_input_locally = false
 size = Vector2i(2, 2)
 render_target_update_mode = 4
 
-[node name="Tree" parent="StackChildren/SubViewportContainer/SubViewport" instance=ExtResource("3_bcokp")]
+[node name="Tree" parent="StackChildren/SubViewportContainer/SubViewport" instance=ExtResource("3_3584l")]
 unique_name_in_owner = true
-position = Vector2(3, 3)
 
 [node name="Camera2D" type="Camera2D" parent="StackChildren/SubViewportContainer/SubViewport"]
 unique_name_in_owner = true
