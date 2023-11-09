@@ -1,0 +1,155 @@
+extends Node2D
+
+enum TermType {Delta, Symbol, String, Rational, Primop}
+enum Primop {Add, Sub, Mul, Div, Eq}
+
+var is_parent : bool = false
+
+const _v_separation : float = 10
+const _h_separation : float = 20
+#const _spread_speed : float = 1000
+
+var TreeNode = load("res://vm/tree.tscn")
+var _children_width = 0:
+    get:
+        var ch_width = 0
+        for c in $SubTrees.get_children():
+            ch_width += c.width + _h_separation
+        ch_width -= _h_separation # There's no space after the last child
+        return ch_width
+var width : int = 0:
+    get:
+        var own = $Node.size.x
+        if _expanded:
+            return max(own, _children_width)
+        else:
+            return own
+    set(new_width):
+        print("PANIC! Attempted to change width to ", new_width)
+
+var _expanded : bool = false:
+    get:
+        return _expanded
+    set(is_expanded):
+        $SubTrees.visible = is_expanded
+        $Shape.visible = is_expanded
+        %ExpandedLabel.visible = is_expanded
+        %FoldedLabel.visible = not is_expanded
+        _expanded = is_expanded
+
+func _process(_delta):
+    if _expanded:
+        for i in $SubTrees.get_child_count():
+            var c = $SubTrees.get_child(i)
+            var target_position = _child_position(i)
+            var diff = target_position - c.position
+            if diff.length_squared() > 10:
+                c.position += diff / 2
+                var l = $Shape.get_child(i)
+                l.points[-1].x = c.position.x
+                l.points[-2].x = c.position.x
+
+func _child_position(child_count : int) -> Vector2:
+    var pos_x = -_children_width / 2
+    for i in range(0, child_count):
+        pos_x += $SubTrees.get_child(i).width + _h_separation
+    pos_x += $SubTrees.get_child(child_count).width / 2
+    return Vector2(pos_x, $Node.size.y + _h_separation)
+
+func _line_to_child(child_count : int):
+    var line = Line2D.new()
+    var line_start_x = position.x
+    var line_end_x = $SubTrees.get_child(child_count).position.x
+    var line_end_y = $SubTrees.get_child(child_count).position.y
+    line.points = \
+        [Vector2(line_start_x, 0),
+        Vector2(line_start_x, line_end_y / 2),
+        Vector2(line_end_x, line_end_y / 2),
+        $SubTrees.get_child(child_count).position]
+    return line
+
+func _read_rational(serializer : Serializer) -> float:
+    var rational_sign : int = serializer.read_uint8()
+    if rational_sign == 2:
+        rational_sign = -1
+    var numerator = _read_alnat(serializer)
+    var denominator = _read_alnat(serializer)
+    return float(rational_sign) * numerator / denominator
+
+# TODO make it handle arbitrarily large numbers
+func _read_alnat(serializer : Serializer) -> int:
+    var num : int = 0
+    var power : int = 1
+    var byte : int = serializer.read_uint8()
+    while byte > 127:
+        num += power * (byte - 128)
+        power *= 128
+        byte = serializer.read_uint8()
+    num += power * byte
+    return num
+
+func add_child_tree(tree):
+    $SubTrees.add_child(tree)
+
+func value_deserialize(serializer : Serializer) -> String:
+    var type = serializer.read_uint8()
+    match type:
+        TermType.Delta:     return "Δ"
+        TermType.Symbol:    return serializer.read_null_terminated_string()
+        TermType.String:    return "\"" + serializer.read_null_terminated_string() + "\""
+        TermType.Rational:  return str(_read_rational(serializer))
+        TermType.Primop:
+            var primop = serializer.read_uint8()
+            var primop_strings = ["Add", "Sub", "Mul", "Div", "Eq"]
+            return "<" + primop_strings[primop] + ">"
+    return "ERROR: value_deserialize: invalid term / operator type"
+
+func program_deserialize(serializer : Serializer):
+    %ExpandedLabel.text = value_deserialize(serializer)
+    var type = serializer.read_uint8()
+    for i in type:
+        var child = TreeNode.instantiate()
+        child.program_deserialize(serializer)
+        $SubTrees.add_child(child)
+    move_children()
+
+func tree_deserialize(serializer: Serializer):
+    var type = serializer.read_uint8()
+    match type:
+        0:
+            program_deserialize(serializer)
+        1:
+            var node0 = TreeNode.instantiate()
+            var node1 = TreeNode.instantiate()
+            node0.tree_deserialize(serializer)
+            node1.tree_deserialize(serializer)
+            $SubTrees.add_child(node0)
+            $SubTrees.add_child(node1)
+            move_children()
+
+func move_children():
+    for i in range($SubTrees.get_child_count()):
+        $SubTrees.get_child(i).position = _child_position(i)
+        $Shape.add_child(_line_to_child(i))
+
+func reset():
+    %ExpandedLabel.text = ""
+#    width = $Node.size.x
+    for s in $Shape.get_children():
+        s.queue_free()
+        $Shape.remove_child(s)
+    for c in $SubTrees.get_children():
+        c.queue_free()
+        $SubTrees.remove_child(c)
+
+func _expand_all(is_expanded : bool):
+    for c in $SubTrees.get_children():
+        c._expanded = is_expanded
+        c._expand_all(is_expanded)
+
+func _on_node_gui_input(event: InputEvent) -> void:
+    if event.is_action_pressed("fold_toggle", false, true):
+        _expanded = not _expanded
+    elif event.is_action_pressed("fold_toggle_all", false, true):
+        _expand_all(not _expanded)
+        _expanded = not _expanded

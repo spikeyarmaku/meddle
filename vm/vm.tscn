@@ -1,126 +1,21 @@
-[gd_scene load_steps=10 format=3 uid="uid://foedm27opk3h"]
+[gd_scene load_steps=4 format=3 uid="uid://dxjr706aysu0e"]
 
-[ext_resource type="StyleBox" uid="uid://3f4mc5xtgq5u" path="res://resources/stylebox_level_0.tres" id="1_rfpgx"]
-[ext_resource type="Script" path="res://scripts/vm.gd" id="1_s33xt"]
-[ext_resource type="PackedScene" uid="uid://nqyrhforstqk" path="res://vm/code.tscn" id="2_myqii"]
-[ext_resource type="StyleBox" uid="uid://bms4hbvrls6nb" path="res://resources/stylebox_level_1.tres" id="3_6hwd2"]
-[ext_resource type="Texture2D" uid="uid://dfpd0ihogf7da" path="res://assets/grabber.png" id="3_f7igy"]
-[ext_resource type="PackedScene" uid="uid://y5dhni8gpvhv" path="res://vm/repl.tscn" id="3_gw1q3"]
-[ext_resource type="PackedScene" uid="uid://dq636nfynugwu" path="res://vm/tree_container.tscn" id="3_tcdcr"]
-[ext_resource type="StyleBox" uid="uid://dsgogjfkkr8ii" path="res://resources/stylebox_level_3.tres" id="9_ccsmt"]
-[ext_resource type="StyleBox" uid="uid://0mv0es2fii1j" path="res://resources/stylebox_level_2.tres" id="11_38qit"]
+[ext_resource type="PackedScene" uid="uid://dq636nfynugwu" path="res://vm/vm_display.tscn" id="1_6eljn"]
+[ext_resource type="Script" path="res://vm/vm.gd" id="1_a0a0m"]
+[ext_resource type="PackedScene" uid="uid://bssoyraclpso0" path="res://vm/vm_control.tscn" id="2_naf1f"]
 
-[node name="VM" type="PanelContainer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = ExtResource("1_rfpgx")
-script = ExtResource("1_s33xt")
-
-[node name="Panes" type="HSplitContainer" parent="."]
-layout_mode = 2
-theme_override_constants/autohide = 0
-theme_override_icons/grabber = ExtResource("3_f7igy")
-
-[node name="LeftPanel" type="PanelContainer" parent="Panes"]
-layout_mode = 2
+[node name="VM" type="VBoxContainer"]
+offset_right = 204.0
+offset_bottom = 114.0
 size_flags_horizontal = 3
-theme_override_styles/panel = ExtResource("3_6hwd2")
+script = ExtResource("1_a0a0m")
 
-[node name="LeftPanelChildren" type="VBoxContainer" parent="Panes/LeftPanel"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Code" parent="Panes/LeftPanel/LeftPanelChildren" instance=ExtResource("2_myqii")]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_colors/background_color = Color(0.113725, 0.133333, 0.160784, 1)
-
-[node name="Repl" parent="Panes/LeftPanel/LeftPanelChildren" instance=ExtResource("3_gw1q3")]
-unique_name_in_owner = true
+[node name="VMDisplay" parent="." instance=ExtResource("1_6eljn")]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="RightPanel" type="MarginContainer" parent="Panes"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="RightPanelChildren" type="VBoxContainer" parent="Panes/RightPanel"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="TreeContainer" parent="Panes/RightPanel/RightPanelChildren" instance=ExtResource("3_tcdcr")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Stepper" type="VBoxContainer" parent="Panes/RightPanel/RightPanelChildren"]
+[node name="VMControl" parent="." instance=ExtResource("2_naf1f")]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panes/RightPanel/RightPanelChildren/Stepper"]
-layout_mode = 2
-
-[node name="ButtonBack" type="Button" parent="Panes/RightPanel/RightPanelChildren/Stepper/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_pressed_color = Color(0.278431, 0.301961, 0.341176, 1)
-theme_override_styles/normal = ExtResource("3_6hwd2")
-theme_override_styles/hover = ExtResource("9_ccsmt")
-theme_override_styles/pressed = ExtResource("1_rfpgx")
-theme_override_styles/disabled = ExtResource("1_rfpgx")
-text = "Back"
-
-[node name="ButtonStep" type="Button" parent="Panes/RightPanel/RightPanelChildren/Stepper/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_pressed_color = Color(0.278431, 0.301961, 0.341176, 1)
-theme_override_styles/normal = ExtResource("3_6hwd2")
-theme_override_styles/hover = ExtResource("9_ccsmt")
-theme_override_styles/pressed = ExtResource("1_rfpgx")
-theme_override_styles/disabled = ExtResource("1_rfpgx")
-text = "Step"
-
-[node name="ButtonRun" type="Button" parent="Panes/RightPanel/RightPanelChildren/Stepper/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_pressed_color = Color(0.278431, 0.301961, 0.341176, 1)
-theme_override_styles/normal = ExtResource("3_6hwd2")
-theme_override_styles/hover = ExtResource("9_ccsmt")
-theme_override_styles/pressed = ExtResource("1_rfpgx")
-theme_override_styles/disabled = ExtResource("1_rfpgx")
-text = "Run
-"
-
-[node name="ButtonForward" type="Button" parent="Panes/RightPanel/RightPanelChildren/Stepper/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_pressed_color = Color(0.278431, 0.301961, 0.341176, 1)
-theme_override_styles/normal = ExtResource("3_6hwd2")
-theme_override_styles/hover = ExtResource("9_ccsmt")
-theme_override_styles/pressed = ExtResource("1_rfpgx")
-theme_override_styles/disabled = ExtResource("1_rfpgx")
-text = "Forward
-"
-
-[node name="HSliderStep" type="HSlider" parent="Panes/RightPanel/RightPanelChildren/Stepper"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_styles/slider = ExtResource("1_rfpgx")
-theme_override_styles/grabber_area = ExtResource("9_ccsmt")
-theme_override_styles/grabber_area_highlight = ExtResource("11_38qit")
-min_value = -1.0
-max_value = 0.0
-value = -1.0
-
-[connection signal="text_submitted" from="Panes/LeftPanel/LeftPanelChildren/Repl" to="." method="_on_repl_text_submitted"]
-[connection signal="pressed" from="Panes/RightPanel/RightPanelChildren/Stepper/HBoxContainer/ButtonBack" to="." method="_on_button_back_pressed"]
-[connection signal="pressed" from="Panes/RightPanel/RightPanelChildren/Stepper/HBoxContainer/ButtonStep" to="." method="_on_button_step_pressed"]
-[connection signal="pressed" from="Panes/RightPanel/RightPanelChildren/Stepper/HBoxContainer/ButtonRun" to="." method="_on_button_run_pressed"]
-[connection signal="pressed" from="Panes/RightPanel/RightPanelChildren/Stepper/HBoxContainer/ButtonForward" to="." method="_on_button_forward_pressed"]
-[connection signal="drag_ended" from="Panes/RightPanel/RightPanelChildren/Stepper/HSliderStep" to="." method="_on_h_slider_step_drag_ended"]
+[connection signal="display" from="VMControl" to="." method="_on_vm_control_display"]
+[connection signal="request_next_step" from="VMControl" to="." method="_on_vm_control_request_next_step"]

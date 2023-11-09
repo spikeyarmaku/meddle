@@ -1,5 +1,0 @@
-- Clicking on a closure's frame marker should highlight / jump to the
-corresponding entry in the heap
-- hovering on a symbol should look up its value
-- Fix debugger reset code
-- fix sending first "get" stepping the evaluation

@@ -18,7 +18,7 @@ const _base_rot_step = PI/20 # rotation from one child to the next at the start
 
 var depth = 0
 var weight = 0
-var _TreeNode = load("res://vm/tree_node.tscn")
+var _TreeNode = load("res://vm/experimental_tree/tree_node.tscn")
 var _collisions = []
 var _spread = 0
 var _spread_diff = 0.1

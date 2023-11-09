@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bqwj0cibqmakn"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_22n5q"]
-[ext_resource type="PackedScene" uid="uid://foedm27opk3h" path="res://vm/vm.tscn" id="2_jpo81"]
+[ext_resource type="PackedScene" uid="uid://foedm27opk3h" path="res://vm/ide.tscn" id="2_jpo81"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -63,8 +63,8 @@ text = "Loading"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VM" parent="." instance=ExtResource("2_jpo81")]
+[node name="IDE" parent="." instance=ExtResource("2_jpo81")]
 visible = false
 layout_mode = 1
 
-[connection signal="send_text" from="VM" to="." method="_on_vm_send_text"]
+[connection signal="send_text" from="IDE" to="." method="_on_ide_send_text"]

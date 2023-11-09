@@ -37,7 +37,7 @@ func _process(_delta):
             if connection_status == StreamPeerTCP.STATUS_CONNECTED:
                 state = DebuggerState.Connected
                 $LoadingScreen.visible = false
-                $VM.visible = true
+                $IDE.visible = true
         DebuggerState.Connected:
             connection.poll()
             var byte_count = connection.get_available_bytes()
@@ -54,11 +54,6 @@ func _on_button_connect_pressed():
     $Menu.visible = false
     $LoadingScreen.visible = true
     state = DebuggerState.Connecting
-
-# TODO add the messages to a queue, and send them after previous response has
-# arrived
-func _on_vm_send_text(text):
-    _send_queue.append(text)
 
 func _send_messages():
     if _send_queue.size() > 0:
@@ -77,8 +72,14 @@ func _interpret_response(bytes : PackedByteArray):
         print("New response size: ", bytes.size(), ", type: ", resp_type)
         match resp_type:
             ResponseType.EvalStateResponse:
-                $VM.is_finished = 1 - serializer.read_uint8()
+                $IDE.get_vm().is_finished = 1 - serializer.read_uint8()
             ResponseType.VMDataResponse:
                 var vm_bytes = serializer.get_data()
-                $VM.new_state(vm_bytes)
+                $IDE.get_vm().new_state(vm_bytes)
             ResponseType.TermResponse: pass
+            ResponseType.InvalidCommandResponse:
+                print("Invalid command")
+            ResponseType.ExitResponse: pass
+
+func _on_ide_send_text(text) -> void:
+    _send_queue.append(text)

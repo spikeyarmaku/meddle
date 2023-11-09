@@ -1,0 +1,73 @@
+[gd_scene load_steps=6 format=3 uid="uid://bssoyraclpso0"]
+
+[ext_resource type="StyleBox" uid="uid://bms4hbvrls6nb" path="res://resources/stylebox_level_1.tres" id="1_7nl8w"]
+[ext_resource type="Script" path="res://vm/vm_control.gd" id="1_h46ff"]
+[ext_resource type="StyleBox" uid="uid://dsgogjfkkr8ii" path="res://resources/stylebox_level_3.tres" id="2_3gvgt"]
+[ext_resource type="StyleBox" uid="uid://3f4mc5xtgq5u" path="res://resources/stylebox_level_0.tres" id="3_coijx"]
+[ext_resource type="StyleBox" uid="uid://0mv0es2fii1j" path="res://resources/stylebox_level_2.tres" id="4_5udgu"]
+
+[node name="VMControl" type="VBoxContainer"]
+script = ExtResource("1_h46ff")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="ButtonBack" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_pressed_color = Color(0.278431, 0.301961, 0.341176, 1)
+theme_override_styles/normal = ExtResource("1_7nl8w")
+theme_override_styles/hover = ExtResource("2_3gvgt")
+theme_override_styles/pressed = ExtResource("3_coijx")
+theme_override_styles/disabled = ExtResource("3_coijx")
+text = "Back"
+
+[node name="ButtonStep" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_pressed_color = Color(0.278431, 0.301961, 0.341176, 1)
+theme_override_styles/normal = ExtResource("1_7nl8w")
+theme_override_styles/hover = ExtResource("2_3gvgt")
+theme_override_styles/pressed = ExtResource("3_coijx")
+theme_override_styles/disabled = ExtResource("3_coijx")
+text = "Step"
+
+[node name="ButtonRun" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_pressed_color = Color(0.278431, 0.301961, 0.341176, 1)
+theme_override_styles/normal = ExtResource("1_7nl8w")
+theme_override_styles/hover = ExtResource("2_3gvgt")
+theme_override_styles/pressed = ExtResource("3_coijx")
+theme_override_styles/disabled = ExtResource("3_coijx")
+text = "Run
+"
+
+[node name="ButtonForward" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_pressed_color = Color(0.278431, 0.301961, 0.341176, 1)
+theme_override_styles/normal = ExtResource("1_7nl8w")
+theme_override_styles/hover = ExtResource("2_3gvgt")
+theme_override_styles/pressed = ExtResource("3_coijx")
+theme_override_styles/disabled = ExtResource("3_coijx")
+text = "Forward
+"
+
+[node name="HSliderStep" type="HSlider" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/slider = ExtResource("3_coijx")
+theme_override_styles/grabber_area = ExtResource("2_3gvgt")
+theme_override_styles/grabber_area_highlight = ExtResource("4_5udgu")
+max_value = 0.0
+
+[connection signal="pressed" from="HBoxContainer/ButtonBack" to="." method="_on_button_back_pressed"]
+[connection signal="pressed" from="HBoxContainer/ButtonStep" to="." method="_on_button_step_pressed"]
+[connection signal="pressed" from="HBoxContainer/ButtonRun" to="." method="_on_button_run_pressed"]
+[connection signal="pressed" from="HBoxContainer/ButtonForward" to="." method="_on_button_forward_pressed"]
+[connection signal="drag_ended" from="HSliderStep" to="." method="_on_h_slider_step_drag_ended"]
