@@ -112,7 +112,8 @@ func program_deserialize(serializer : Serializer):
     var type = serializer.read_uint8()
     for i in type:
         var child = TreeNode.instantiate()
-        node_count += child.program_deserialize(serializer)
+        child.program_deserialize(serializer)
+        node_count += child.node_count
         $SubTrees.add_child(child)
     move_children()
     if node_count < EXPAND_NODE_COUNT_LIMIT:
