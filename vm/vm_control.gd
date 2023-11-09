@@ -71,6 +71,7 @@ func new_state():
     else:
         %HSliderStep.editable = true
     %HSliderStep.value = %HSliderStep.max_value
+    _update_buttons()
 
 func _go_forward():
     _current_step += 1
