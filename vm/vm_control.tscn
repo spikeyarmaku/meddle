@@ -65,6 +65,7 @@ theme_override_styles/slider = ExtResource("3_coijx")
 theme_override_styles/grabber_area = ExtResource("2_3gvgt")
 theme_override_styles/grabber_area_highlight = ExtResource("4_5udgu")
 max_value = 0.0
+editable = false
 
 [connection signal="pressed" from="HBoxContainer/ButtonBack" to="." method="_on_button_back_pressed"]
 [connection signal="pressed" from="HBoxContainer/ButtonStep" to="." method="_on_button_step_pressed"]

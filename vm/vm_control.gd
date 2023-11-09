@@ -10,24 +10,24 @@ var is_finished : bool = false:
         is_finished = new_value
         %ButtonStep.disabled = is_finished
         _run_mode = _run_mode and \
-            (not is_finished && _current_step == max_step)
+            (not is_finished && _current_step == _max_step)
 
-var max_step : int:
+var _max_step : int:
     get:
-        return %HSliderStep.max_value + 1
+        return %HSliderStep.max_value
     set(value):
-        %HSliderStep.max_value = value - 1
+        %HSliderStep.max_value = value
 var _current_step : int:
     get:
         return %HSliderStep.value
     set(new_value):
-        if new_value >= max_step:
+        if new_value > _max_step:
             if is_finished == false:
                 request_next_step.emit()
                 _is_waiting = true
             else:
                 _run_mode = false
-        elif new_value >= 0:
+        else:
             %HSliderStep.value = new_value
             _update_buttons()
         display.emit(_current_step)
@@ -44,7 +44,7 @@ var _run_mode : bool = false:
 
 func _update_buttons():
     %ButtonBack.disabled = _current_step <= 0
-    var stop : bool = is_finished && _current_step == max_step
+    var stop : bool = is_finished && _current_step == _max_step
     %ButtonForward.disabled = stop
     %ButtonRun.disabled = stop
     _run_mode = _run_mode and not stop
@@ -61,10 +61,16 @@ func reset():
     _current_step = -1
     _run_mode = false
     %HSliderStep.value = 0
+    %SliderStep.editabel = false
+    _max_step = 0
 
 func new_state():
     _is_waiting = false
-    _current_step = max(0, max_step - 1)
+    if %HSliderStep.editable:
+        _max_step += 1
+    else:
+        %HSliderStep.editable = true
+    %HSliderStep.value = %HSliderStep.max_value
 
 func _go_forward():
     _current_step += 1
