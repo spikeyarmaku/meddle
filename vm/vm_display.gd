@@ -4,13 +4,16 @@ const Closure = preload("res://vm/templates/closure.tscn")
 const TreeNode = preload("res://vm/tree.tscn")
 
 var _dragging : bool = false
+var _history = []
 
 func new_state(bytes):
     var serializer := Serializer.new()
     serializer.from_bytes(bytes)
     serializer.read_word_size()
-    %TreeHistoryContainer.add_child(deserialize(serializer))
-    display(%TreeHistoryContainer.get_child_count() - 1)
+#    %TreeHistoryContainer.add_child(deserialize(serializer))
+    _history.append(deserialize(serializer))
+#    display(%TreeHistoryContainer.get_child_count() - 1)
+    display(_history.size() - 1)
 
 func deserialize(serializer : Serializer) -> Node2D:
     var step = Node2D.new()
@@ -30,9 +33,12 @@ func deserialize(serializer : Serializer) -> Node2D:
     return step
 
 func reset():
-    for c in %TreeHistoryContainer.get_children():
+    for c in _history:
         c.queue_free()
-        %TreeHistoryContainer.remove_child(c)
+    %TreeHistoryContainer.remove_child(%TreeHistoryContainer.get_child(0))
+#    for c in %TreeHistoryContainer.get_children():
+#        c.queue_free()
+#        %TreeHistoryContainer.remove_child(c)
 
 func _on_sub_viewport_container_gui_input(event: InputEvent) -> void:
     if event.is_action_pressed("camera_move"):
@@ -49,15 +55,18 @@ func _on_sub_viewport_container_gui_input(event: InputEvent) -> void:
             %Camera2D.position -= event.relative / %Camera2D.zoom
 
 func display(index : int):
-    for i in %TreeHistoryContainer.get_child_count():
-        %TreeHistoryContainer.get_child(i).visible = i == index
+    %TreeHistoryContainer.remove_child(%TreeHistoryContainer.get_child(0))
+    %TreeHistoryContainer.add_child(_history[index])
+#    for i in %TreeHistoryContainer.get_child_count():
+#        %TreeHistoryContainer.get_child(i).visible = i == index
     _update_side_buttons(index)
 
 func _update_side_buttons(history_index : int):
     for c in %StackButtons.get_children():
         c.queue_free()
         %StackButtons.remove_child(c)
-    var step = %TreeHistoryContainer.get_child(history_index)
+#    var step = %TreeHistoryContainer.get_child(history_index)
+    var step = _history[history_index]
     for stack_index in step.get_child_count():
         var button = Button.new()
         button.toggle_mode = true
@@ -78,6 +87,7 @@ func _update_side_buttons(history_index : int):
 func _on_stack_button_pressed(history_index, stack_index):
     for i in %StackButtons.get_child_count():
         %StackButtons.get_child(i).button_pressed = i == stack_index
-    var step = %TreeHistoryContainer.get_child(history_index)
+#    var step = %TreeHistoryContainer.get_child(history_index)
+    var step = _history[history_index]
     for i in step.get_child_count():
         step.get_child(i).visible = i == stack_index
