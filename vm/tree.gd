@@ -17,8 +17,8 @@ var _children_width = 0:
     get:
         var ch_width = 0
         for c in $SubTrees.get_children():
-            ch_width += c.width + _h_separation
-        ch_width -= _h_separation # There's no space after the last child
+            ch_width += c.width
+        ch_width += _h_separation * ($SubTrees.get_child_count() - 1)
         return ch_width
 var width : int = 0:
     get:
@@ -53,10 +53,10 @@ func _process(_delta):
                 l.points[-2].x = c.position.x
 
 func _child_position(child_count : int) -> Vector2:
-    var pos_x = -_children_width / 2
+    var pos_x = -_children_width / 2.0
     for i in range(0, child_count):
-        pos_x += $SubTrees.get_child(i).width + _h_separation
-    pos_x += $SubTrees.get_child(child_count).width / 2
+        pos_x += $SubTrees.get_child(i).width + _v_separation
+    pos_x += $SubTrees.get_child(child_count).width / 2.0
     return Vector2(pos_x, $Node.size.y + _h_separation)
 
 func _line_to_child(child_count : int):
