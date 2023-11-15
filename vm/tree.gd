@@ -102,6 +102,13 @@ func _read_alnat(serializer : Serializer) -> int:
 #func add_child_tree(tree):
 #    $SubTrees.add_child(tree)
 
+func set_expand(expand : bool, node_limit : int = EXPAND_NODE_COUNT_LIMIT):
+    if expand == false:
+        _expanded = false
+    else:
+        if node_limit == 0 or node_count < node_limit:
+            _expanded = true
+
 func value_deserialize(serializer : Serializer) -> String:
     var type = serializer.read_uint8()
     match type:
