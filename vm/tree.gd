@@ -102,12 +102,16 @@ func _read_alnat(serializer : Serializer) -> int:
 #func add_child_tree(tree):
 #    $SubTrees.add_child(tree)
 
-func set_expand(expand : bool, node_limit : int = EXPAND_NODE_COUNT_LIMIT):
+func set_expand(expand : bool, recursive : bool,
+        node_limit : int = EXPAND_NODE_COUNT_LIMIT):
     if expand == false:
         _expanded = false
     else:
         if node_limit == 0 or node_count < node_limit:
             _expanded = true
+    if recursive:
+        for c in $SubTrees.get_children():
+            c.set_expand(expand, recursive, node_limit)
 
 func value_deserialize(serializer : Serializer) -> String:
     var type = serializer.read_uint8()
@@ -167,9 +171,11 @@ func tree_deserialize(serializer: Serializer):
         _expanded = true
 
 func move_children(is_recursive : bool):
-#    for c in $Shape.get_children():
-#        c.queue_free()
-#        $Shape.remove_child(c)
+    # Change color if node has more than 2 children
+    if $SubTrees.get_child_count() > 2:
+        var stylebox = $Node.get_theme_stylebox("panel").duplicate()
+        stylebox.bg_color = Color.LIGHT_CORAL
+        $Node.add_theme_stylebox_override("panel", stylebox)
     for i in range($SubTrees.get_child_count()):
         $SubTrees.get_child(i).position = _child_position(i)
         $Shape.add_child(_line_to_child(i))

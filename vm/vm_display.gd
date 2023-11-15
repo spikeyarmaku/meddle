@@ -53,7 +53,7 @@ func _read_whole_tree(serializer):
         var tree_node = TreeNode.instantiate()
         tree_node.is_parent = is_parent
         tree_node.tree_deserialize_compact(serializer)
-        tree_node.set_expand(true, 0)
+#        tree_node.set_expand(true, true, 0)
         stack.append(tree_node)
     stack.reverse()
     for s in stack:
@@ -64,7 +64,7 @@ func _read_whole_tree(serializer):
             whole_tree.get_node("SubTrees").add_child(s)
     whole_tree.move_children(true)
     whole_tree.visible = true
-    whole_tree.set_expand(true, 0)
+    whole_tree.set_expand(true, true, 0)
     return whole_tree
 
 func reset():
