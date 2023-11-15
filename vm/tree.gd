@@ -13,6 +13,13 @@ const _h_separation : float = 20
 #const _spread_speed : float = 1000
 
 var TreeNode = load("res://vm/tree.tscn")
+
+var label:
+    get:
+        return %ExpandedLabel.text
+    set(new_value):
+        %ExpandedLabel.text = new_value
+
 var _children_width = 0:
     get:
         var ch_width = 0
@@ -49,8 +56,9 @@ func _process(_delta):
             if diff.length_squared() > 10:
                 c.position += diff / 2
                 var l = $Shape.get_child(i)
-                l.points[-1].x = c.position.x
-                l.points[-2].x = c.position.x
+                if l != null:
+                    l.points[-1].x = c.position.x
+                    l.points[-2].x = c.position.x
 
 func _child_position(child_count : int) -> Vector2:
     var pos_x = -_children_width / 2.0
@@ -61,12 +69,12 @@ func _child_position(child_count : int) -> Vector2:
 
 func _line_to_child(child_count : int):
     var line = Line2D.new()
-    var line_start_x = position.x
+#    var line_start_x = position.x
     var line_end_x = $SubTrees.get_child(child_count).position.x
     var line_end_y = $SubTrees.get_child(child_count).position.y
     line.points = \
-        [Vector2(line_start_x, 0),
-        Vector2(line_start_x, line_end_y / 2),
+        [Vector2(0, 0),
+        Vector2(0, line_end_y / 2),
         Vector2(line_end_x, line_end_y / 2),
         $SubTrees.get_child(child_count).position]
     return line
@@ -115,7 +123,22 @@ func program_deserialize(serializer : Serializer):
         child.program_deserialize(serializer)
         node_count += child.node_count
         $SubTrees.add_child(child)
-    move_children()
+#    move_children()
+    if node_count < EXPAND_NODE_COUNT_LIMIT:
+        _expanded = true
+
+func tree_deserialize_compact(serializer : Serializer):
+    var type = serializer.read_uint8()
+    match type:
+        0:
+            program_deserialize(serializer)
+        1:
+            var node = TreeNode.instantiate()
+            tree_deserialize_compact(serializer)
+            node.tree_deserialize_compact(serializer)
+            node_count += node.node_count
+            $SubTrees.add_child(node)
+#            move_children()
     if node_count < EXPAND_NODE_COUNT_LIMIT:
         _expanded = true
 
@@ -132,14 +155,20 @@ func tree_deserialize(serializer: Serializer):
             node_count += node0.node_count + node1.node_count
             $SubTrees.add_child(node0)
             $SubTrees.add_child(node1)
-            move_children()
+#            move_children()
     if node_count < EXPAND_NODE_COUNT_LIMIT:
         _expanded = true
 
-func move_children():
+func move_children(is_recursive : bool):
+#    for c in $Shape.get_children():
+#        c.queue_free()
+#        $Shape.remove_child(c)
     for i in range($SubTrees.get_child_count()):
         $SubTrees.get_child(i).position = _child_position(i)
         $Shape.add_child(_line_to_child(i))
+    if is_recursive:
+        for c in $SubTrees.get_children():
+            c.move_children(true)
 
 func reset():
     %ExpandedLabel.text = ""
