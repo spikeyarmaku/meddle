@@ -1,6 +1,7 @@
 extends Node2D
 
-enum TermType {Delta, Symbol, String, Rational, Primop}
+enum ValueType {Delta, Symbol, String, Rational, Primop}
+enum ProgramType {Leaf, Stem, Fork, Value}
 enum Primop {Add, Sub, Mul, Div, Eq}
 
 const EXPAND_NODE_COUNT_LIMIT = 20
@@ -116,24 +117,27 @@ func set_expand(expand : bool, recursive : bool,
 func value_deserialize(serializer : Serializer) -> String:
     var type = serializer.read_uint8()
     match type:
-        TermType.Delta:     return "Δ"
-        TermType.Symbol:    return serializer.read_null_terminated_string()
-        TermType.String:    return "\"" + serializer.read_null_terminated_string() + "\""
-        TermType.Rational:  return str(_read_rational(serializer))
-        TermType.Primop:
+        ValueType.Delta:     return "Δ"
+        ValueType.Symbol:    return serializer.read_null_terminated_string()
+        ValueType.String:    return "\"" + serializer.read_null_terminated_string() + "\""
+        ValueType.Rational:  return str(_read_rational(serializer))
+        ValueType.Primop:
             var primop = serializer.read_uint8()
             var primop_strings = ["Add", "Sub", "Mul", "Div", "Eq"]
             return "<" + primop_strings[primop] + ">"
     return "ERROR: value_deserialize: invalid term / operator type"
 
 func program_deserialize(serializer : Serializer):
-    %ExpandedLabel.text = value_deserialize(serializer)
     var type = serializer.read_uint8()
-    for i in type:
-        var child = TreeNode.instantiate()
-        child.program_deserialize(serializer)
-        node_count += child.node_count
-        $SubTrees.add_child(child)
+    if type == ProgramType.Value:
+        %ExpandedLabel.text = value_deserialize(serializer)
+    else:
+        %ExpandedLabel.text = "Δ"
+        for i in type:
+            var child = TreeNode.instantiate()
+            child.program_deserialize(serializer)
+            node_count += child.node_count
+            $SubTrees.add_child(child)
 #    move_children()
     if node_count < EXPAND_NODE_COUNT_LIMIT:
         _expanded = true
