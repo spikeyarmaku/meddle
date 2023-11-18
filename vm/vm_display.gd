@@ -64,7 +64,7 @@ func _read_whole_tree(serializer):
             whole_tree.get_node("SubTrees").add_child(s)
     whole_tree.move_children(true)
     whole_tree.visible = true
-    whole_tree.set_expand(true, true, 0)
+    whole_tree.set_expand(false, true, 50)
     return whole_tree
 
 func reset():

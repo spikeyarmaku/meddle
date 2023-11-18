@@ -103,16 +103,23 @@ func _read_alnat(serializer : Serializer) -> int:
 #func add_child_tree(tree):
 #    $SubTrees.add_child(tree)
 
-func set_expand(expand : bool, recursive : bool,
-        node_limit : int = EXPAND_NODE_COUNT_LIMIT):
+func set_expand(expand : bool, recursive : bool, node_limit : int):
     if expand == false:
         _expanded = false
+        if recursive:
+            for c in $SubTrees.get_children():
+                c.set_expand(false, recursive, node_limit)
     else:
         if node_limit == 0 or node_count < node_limit:
             _expanded = true
-    if recursive:
-        for c in $SubTrees.get_children():
-            c.set_expand(expand, recursive, node_limit)
+            if recursive:
+                for c in $SubTrees.get_children():
+                    c.set_expand(expand, recursive, node_limit)
+        else:
+            _expanded = false
+            if recursive:
+                for c in $SubTrees.get_children():
+                    c.set_expand(false, recursive, node_limit)
 
 func value_deserialize(serializer : Serializer) -> String:
     var type = serializer.read_uint8()
