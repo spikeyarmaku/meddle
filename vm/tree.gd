@@ -4,7 +4,6 @@ enum ValueType {Delta, Symbol, String, Rational, Primop}
 enum ProgramType {Leaf, Stem, Fork, Value}
 enum Primop {Add, Sub, Mul, Div, Eq}
 
-const EXPAND_NODE_COUNT_LIMIT = 20
 var node_count : int = 1
 
 var is_parent : bool = false
@@ -145,9 +144,6 @@ func program_deserialize(serializer : Serializer):
             child.program_deserialize(serializer)
             node_count += child.node_count
             $SubTrees.add_child(child)
-#    move_children()
-    if node_count < EXPAND_NODE_COUNT_LIMIT:
-        _expanded = true
 
 func tree_deserialize_compact(serializer : Serializer):
     var type = serializer.read_uint8()
@@ -160,9 +156,6 @@ func tree_deserialize_compact(serializer : Serializer):
             node.tree_deserialize_compact(serializer)
             node_count += node.node_count
             $SubTrees.add_child(node)
-#            move_children()
-    if node_count < EXPAND_NODE_COUNT_LIMIT:
-        _expanded = true
 
 func tree_deserialize(serializer: Serializer):
     var type = serializer.read_uint8()
@@ -177,9 +170,6 @@ func tree_deserialize(serializer: Serializer):
             node_count += node0.node_count + node1.node_count
             $SubTrees.add_child(node0)
             $SubTrees.add_child(node1)
-#            move_children()
-    if node_count < EXPAND_NODE_COUNT_LIMIT:
-        _expanded = true
 
 func move_children(is_recursive : bool):
     # Change color if node has more than 2 children

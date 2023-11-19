@@ -2,6 +2,7 @@ extends Control
 
 const Closure = preload("res://vm/templates/closure.tscn")
 const TreeNode = preload("res://vm/tree.tscn")
+const EXPAND_NODE_COUNT_LIMIT = 50
 
 var _dragging : bool = false
 var _stack_history = []
@@ -30,6 +31,7 @@ func deserialize(serializer : Serializer) -> Node2D:
     control.visible = false
     control.program_deserialize(serializer)
     control.move_children(true)
+    control.set_expand(true, true, EXPAND_NODE_COUNT_LIMIT)
     step.add_child(control)
     # Deserialize stack elements
     var stack_count = serializer.read_word()
@@ -41,6 +43,7 @@ func deserialize(serializer : Serializer) -> Node2D:
         step.add_child(tree_node)
         tree_node.visible = false
         tree_node.move_children(true)
+        tree_node.set_expand(true, true, EXPAND_NODE_COUNT_LIMIT)
     return step
 
 func _read_whole_tree(serializer):
@@ -59,12 +62,14 @@ func _read_whole_tree(serializer):
     for s in stack:
         if s.is_parent:
             s.get_node("SubTrees").add_child(whole_tree)
+            s.node_count += whole_tree.node_count
             whole_tree = s
         else:
             whole_tree.get_node("SubTrees").add_child(s)
+            whole_tree.node_count += s.node_count
     whole_tree.move_children(true)
     whole_tree.visible = true
-    whole_tree.set_expand(false, true, 50)
+    whole_tree.set_expand(true, true, EXPAND_NODE_COUNT_LIMIT)
     return whole_tree
 
 func reset():
