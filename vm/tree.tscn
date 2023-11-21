@@ -36,13 +36,13 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_bemmo")
 
 [node name="ExpandedLabel" type="Label" parent="Node"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 
 [node name="FoldedLabel" type="Label" parent="Node"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 24

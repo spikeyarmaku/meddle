@@ -1,8 +1,6 @@
 extends Node2D
 
-enum ValueType {Delta, Symbol, String, Rational, Primop}
-enum ProgramType {Leaf, Stem, Fork, Value}
-enum Primop {Add, Sub, Mul, Div, Eq}
+enum ProgramType {Leaf, Stem, Fork}
 
 var node_count : int = 1
 
@@ -19,6 +17,7 @@ var label:
         return %ExpandedLabel.text
     set(new_value):
         %ExpandedLabel.text = new_value
+        %FoldedLabel.text = "(" + new_value + ")"
 
 var _children_width = 0:
     get:
@@ -37,15 +36,16 @@ var width : int = 0:
     set(new_width):
         print("PANIC! Attempted to change width to ", new_width)
 
-var _expanded : bool = false:
+var _expanded : bool = true:
     get:
         return _expanded
     set(is_expanded):
-        $SubTrees.visible = is_expanded
-        $Shape.visible = is_expanded
-        %ExpandedLabel.visible = is_expanded
-        %FoldedLabel.visible = not is_expanded
-        _expanded = is_expanded
+        if $SubTrees.get_child_count() > 0:
+            $SubTrees.visible = is_expanded
+            $Shape.visible = is_expanded
+            %ExpandedLabel.visible = is_expanded
+            %FoldedLabel.visible = not is_expanded
+            _expanded = is_expanded
 
 func _process(_delta):
     if _expanded:
@@ -120,30 +120,16 @@ func set_expand(expand : bool, recursive : bool, node_limit : int):
                 for c in $SubTrees.get_children():
                     c.set_expand(false, recursive, node_limit)
 
-func value_deserialize(serializer : Serializer) -> String:
-    var type = serializer.read_uint8()
-    match type:
-        ValueType.Delta:     return "Δ"
-        ValueType.Symbol:    return serializer.read_null_terminated_string()
-        ValueType.String:    return "\"" + serializer.read_null_terminated_string() + "\""
-        ValueType.Rational:  return str(_read_rational(serializer))
-        ValueType.Primop:
-            var primop = serializer.read_uint8()
-            var primop_strings = ["Add", "Sub", "Mul", "Div", "Eq"]
-            return "<" + primop_strings[primop] + ">"
-    return "ERROR: value_deserialize: invalid term / operator type"
-
 func program_deserialize(serializer : Serializer):
+    label = serializer.read_null_terminated_string()
+    if label == "":
+        label = "Δ"
     var type = serializer.read_uint8()
-    if type == ProgramType.Value:
-        %ExpandedLabel.text = value_deserialize(serializer)
-    else:
-        %ExpandedLabel.text = "Δ"
-        for i in type:
-            var child = TreeNode.instantiate()
-            child.program_deserialize(serializer)
-            node_count += child.node_count
-            $SubTrees.add_child(child)
+    for i in type:
+        var child = TreeNode.instantiate()
+        child.program_deserialize(serializer)
+        node_count += child.node_count
+        $SubTrees.add_child(child)
 
 func tree_deserialize_compact(serializer : Serializer):
     var type = serializer.read_uint8()
@@ -185,7 +171,7 @@ func move_children(is_recursive : bool):
             c.move_children(true)
 
 func reset():
-    %ExpandedLabel.text = ""
+    label = ""
 #    width = $Node.size.x
     for s in $Shape.get_children():
         s.queue_free()
